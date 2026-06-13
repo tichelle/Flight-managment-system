@@ -1,0 +1,12 @@
+<section class="py-5 bg-dark text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Book Your Flight?</h2>
+        <p class="lead mb-4">Join thousands of travelers who booked with Skyline — find great fares and secure your seat.</p>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg me-3">Create Account</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">Sign In</a>
+        {% else %}
+            <a href="{{ url_for('main.flights') }}" class="btn btn-light btn-lg">Book Now</a>
+        {% endif %}
+    </div>
+</section>

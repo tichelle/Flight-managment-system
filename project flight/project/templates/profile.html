@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block title %}Profile - Flight Manager{% endblock %}
+{% block content %}
+<div class="row gy-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title">Welcome, {{ current_user.username }}</h4>
+        <p class="text-muted">Email: {{ current_user.email }}</p>
+        <hr>
+        <h5>Saved Favorite Flights</h5>
+        {% if favorites %}
+          <div class="list-group">
+            {% for favorite in favorites %}
+            <a href="{{ url_for('main.flight_detail', flight_id=favorite.flight.id) }}" class="list-group-item list-group-item-action">
+              <strong>{{ favorite.flight.flight_number }}</strong> - {{ favorite.flight.departure_city }} to {{ favorite.flight.destination_city }}
+            </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">No favorite flights yet. Browse flights to save your top picks.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Recent Bookings</h5>
+        {% if bookings %}
+          <ul class="list-group list-group-flush">
+            {% for booking in bookings %}
+            <li class="list-group-item">
+              {{ booking.flight.flight_number }} — {{ booking.flight.departure_city }} to {{ booking.flight.destination_city }}<br>
+              <small class="text-muted">Seat {{ booking.seat_number }}, {{ booking.booking_date.strftime('%b %d %Y') }}</small>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No bookings yet. Book a flight to get started.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

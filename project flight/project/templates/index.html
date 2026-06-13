@@ -1,0 +1,204 @@
+{% extends 'layout.html' %}
+{% block title %}Home - Flight Manager{% endblock %}
+{% block head %}
+  <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+{% block content %}
+<div class="hero-main">
+  <div class="container">
+    <h1>Find And Book A Great Experience</h1>
+    <p class="lead">Browse current and upcoming flights, compare prices, and manage your bookings from one modern dashboard.</p>
+
+    <div class="hero-oval" style="background-image: url('{{ url_for('static', filename='images/image.jpg') }}');"></div>
+
+    <div class="class-pills">
+      <button type="button" class="pill">Economy</button>
+      <button type="button" class="pill active">Business Class</button>
+      <button type="button" class="pill">Fast Class</button>
+    </div>
+    <br><br><br><br>
+
+    <div class="search-card">
+      <form method="get" class="row g-2 align-items-center form-row">
+        <div class="col-md-3 col-6"><input class="form-control" name="departure_city" placeholder="From" value="{{ request.args.get('departure_city', '') }}"></div>
+        <div class="col-md-3 col-6"><input class="form-control" name="destination_city" placeholder="To" value="{{ request.args.get('destination_city', '') }}"></div>
+        <div class="col-md-2 col-6"><input class="form-control" type="date" name="departure_date" value="{{ request.args.get('departure_date', '') }}"></div>
+        <div class="col-md-2 col-6"><input class="form-control" name="airline" placeholder="Airline" value="{{ request.args.get('airline', '') }}"></div>
+        <div class="col-md-2 col-12"><button class="btn btn-search w-100">Search Flights</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<section id="flights">
+  <div class="container flight-section-container">
+    <div class="row gy-4">
+    {% for flight in flights.items[:3] %}
+    <div class="col-lg-4 col-md-6">
+      <div class="flight-card rounded-3xl overflow-hidden border border-white/10 shadow-xl">
+        <div class="airline-header px-4 py-4 text-white d-flex justify-content-between align-items-center">
+          <div>
+            <span class="font-mono text-sm tracking-widest">{{ flight.flight_number }}</span>
+            <h3 class="h5 mb-0">{{ flight.airline.name }}</h3>
+          </div>
+          <div class="text-end">
+            <span class="badge rounded-pill bg-white bg-opacity-20 text-white text-uppercase small px-3 py-1">{{ flight.status }}</span>
+          </div>
+        </div>
+        <div class="p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="text-center">
+              <div class="h2 fw-semibold text-dark mb-1">{{ flight.departure_time.strftime('%H:%M') }}</div>
+              <div class="small text-muted">{{ flight.departure_city }}</div>
+            </div>
+            <div class="flex-grow-1 px-3 position-relative">
+              <div class="h-px bg-gradient-to-r from-transparent via-slate-400 to-transparent position-relative"></div>
+              <div class="position-absolute top-50 start-50 translate-middle time-dot rounded-circle"></div>
+              <div class="text-center small text-muted mt-3">{{ (flight.arrival_time - flight.departure_time).seconds // 3600 }}h {{ ((flight.arrival_time - flight.departure_time).seconds % 3600) // 60 }}m</div>
+            </div>
+            <div class="text-center">
+              <div class="h2 fw-semibold text-dark mb-1">{{ flight.arrival_time.strftime('%H:%M') }}</div>
+              <div class="small text-muted">{{ flight.destination_city }}</div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-end">
+            <div>
+              <div class="small text-muted">Seats Available</div>
+              <div class="h3 fw-semibold text-success">{{ flight.available_seats }}</div>
+            </div>
+            <div class="text-end">
+              <div class="small text-muted">Price</div>
+              <div class="h3 fw-bold text-dark">${{ '%.2f'|format(flight.price) }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="border-top border-white-10 px-4 py-4 bg-white d-flex gap-2">
+          <a href="{{ url_for('main.flight_detail', flight_id=flight.id) }}" class="btn btn-details flex-fill">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mt-4 container">
+    <div class="text-muted">Showing {{ flights.page }} of {{ flights.pages }} pages</div>
+    <nav>
+      <ul class="pagination mb-0">
+        {% if flights.has_prev %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('main.index', page=flights.prev_num, **request.args) }}">Previous</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        {% if flights.has_next %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('main.index', page=flights.next_num, **request.args) }}">Next</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<!-- Flight Services Section -->
+<section class="service-section">
+  <div class="container">
+    <h2>Our Flight Services</h2>
+    <div class="row">
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-plane-departure fa-3x"></i>
+          <h5>Priority Boarding</h5>
+          <p>Get on board faster with priority boarding for selected fares.</p>
+        </div>
+      </div>
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-suitcase-rolling fa-3x"></i>
+          <h5>Extra Baggage</h5>
+          <p>Flexible baggage options so you can bring everything you need.</p>
+        </div>
+      </div>
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-utensils fa-3x"></i>
+          <h5>In-Flight Meals</h5>
+          <p>Delicious meals and special dietary options on selected routes.</p>
+        </div>
+      </div>
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-couch fa-3x"></i>
+          <h5>Lounge Access</h5>
+          <p>Relax before your flight with access to partner lounges.</p>
+        </div>
+      </div>
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-exchange-alt fa-3x"></i>
+          <h5>Flexible Tickets</h5>
+          <p>Change plans easily with flexible ticketing and rebooking.</p>
+        </div>
+      </div>
+      <div class="col-md-4 service-col">
+        <div class="service-card">
+          <i class="fas fa-shield-alt fa-3x"></i>
+          <h5>Travel Insurance</h5>
+          <p>Optional insurance packages to protect your journey.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flight Services Section -->
+<section class="services-section">
+  <div class="container">
+    <h2>Our Flight Services</h2>
+    <div class="row" style="margin-top: 40px;">
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-wifi fa-3x"></i>
+          <h5>In-Flight WiFi</h5>
+          <p>High-speed connectivity so you stay productive and entertained.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-chair fa-3x"></i>
+          <h5>Extra Legroom</h5>
+          <p>Comfortable seating options with additional space to stretch out.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-user-shield fa-3x"></i>
+          <h5>Priority Boarding</h5>
+          <p>Board earlier and settle in without the rush.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-utensils fa-3x"></i>
+          <h5>Gourmet Meals</h5>
+          <p>Carefully curated in-flight menus and special meal options.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-wine-glass-alt fa-3x"></i>
+          <h5>Lounge Access</h5>
+          <p>Relax before departure in our partner lounges worldwide.</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="service-card">
+          <i class="fas fa-headset fa-3x"></i>
+          <h5>Dedicated Support</h5>
+          <p>24/7 customer service for bookings, changes, and assistance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

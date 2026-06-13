@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <div class="d-flex admin-shell">
+      <aside class="sidebar bg-dark text-white p-3">
+        <a class="navbar-brand text-white mb-4 d-block" href="{{ url_for('admin.dashboard') }}">Admin Panel</a>
+        <nav class="nav flex-column">
+          <a class="nav-link text-white" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+          <a class="nav-link text-white" href="{{ url_for('admin.flights') }}"><i class="fas fa-plane me-2"></i>Flights</a>
+          <a class="nav-link text-white" href="{{ url_for('admin.airlines') }}"><i class="fas fa-building me-2"></i>Airlines</a>
+          <a class="nav-link text-white" href="{{ url_for('admin.users') }}"><i class="fas fa-users me-2"></i>Users</a>
+          <a class="nav-link text-white" href="{{ url_for('admin.bookings') }}"><i class="fas fa-ticket-alt me-2"></i>Bookings</a>
+          <a class="nav-link text-white" href="{{ url_for('main.index') }}"><i class="fas fa-home me-2"></i>Public Site</a>
+        </nav>
+      </aside>
+      <div class="admin-content flex-grow-1 p-4">
+        <div class="admin-topbar">
+          <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-outline-secondary d-md-none" data-bs-toggle="collapse" data-bs-target=".sidebar">Menu</button>
+            <h4 class="mb-0">Admin Dashboard</h4>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <input class="form-control search d-none d-md-block" placeholder="Search flights, users...">
+            <div class="user">
+              <div class="avatar">A</div>
+              <div class="d-none d-md-block text-end">
+                <div style="font-weight:600;">{{ current_user.name or current_user.email }}</div>
+                <div class="small text-muted">Administrator</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+        {% include 'flight_cta.html' %}
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

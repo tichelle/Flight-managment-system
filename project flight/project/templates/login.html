@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block title %}Login - Flight Manager{% endblock %}
+
+{% block head %}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .form-glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center" style="min-height: calc(100vh - 70px);">
+  <div class="w-full max-w-6xl px-6">
+    <div class="flex flex-col lg:flex-row gap-10 items-center">
+      <!-- Form -->
+      <div class="w-full lg:w-96">
+        <div class="form-glass rounded-3xl shadow-2xl overflow-hidden border border-white/20 p-6">
+          <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-2xl font-semibold">Sign in</h2>
+            <a href="{{ url_for('main.index') }}" class="text-sm text-blue-600 hover:underline">Back</a>
+          </div>
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="space-y-4">
+              <div>
+                {{ form.email.label(class_='block text-xs font-medium tracking-widest text-gray-500 mb-1') }}
+                {{ form.email(class_='w-full px-4 py-3 rounded-2xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-lg', placeholder='Email or username') }}
+              </div>
+              <div>
+                {{ form.password.label(class_='block text-xs font-medium tracking-widest text-gray-500 mb-1') }}
+                <div class="relative">
+                  {{ form.password(class_='w-full px-4 py-3 rounded-2xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-lg font-mono') }}
+                  <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-eye" id="eyeIcon"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <label class="inline-flex items-center gap-2 text-sm text-gray-600">{{ form.remember(class_='form-check-input') }} Remember me</label>
+                <a href="{{ url_for('auth.register') }}" class="text-sm text-blue-600 hover:underline">Register</a>
+              </div>
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-3xl">Sign In</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Promo -->
+      <div class="flex-1 text-black max-w-lg">
+        <h1 class="text-4xl font-bold">Fly high.<br><span class="text-gray-700">above the sky.</span></h1>
+        <p class="mt-4 text-black">Comfortable. Secure. Your way. Sign in to manage bookings and profile.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    function togglePassword(){
+      const p = document.querySelector('input[type="password"]');
+      const eye = document.getElementById('eyeIcon');
+      if(!p) return;
+      if(p.type === 'password'){ p.type = 'text'; eye.classList.remove('fa-eye'); eye.classList.add('fa-eye-slash'); }
+      else { p.type = 'password'; eye.classList.remove('fa-eye-slash'); eye.classList.add('fa-eye'); }
+    }
+  </script>
+{% endblock %}

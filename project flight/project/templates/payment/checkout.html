@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block title %}Select Payment Method - Flight Booking{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Booking Summary</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Flight:</strong> {{ flight.flight_number }}</p>
+                            <p><strong>Airline:</strong> {{ flight.airline.name }}</p>
+                            <p><strong>From:</strong> {{ flight.departure_city }}</p>
+                            <p><strong>To:</strong> {{ flight.destination_city }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Departure:</strong> {{ flight.departure_time.strftime('%d %b, %H:%M') }}</p>
+                            <p><strong>Arrival:</strong> {{ flight.arrival_time.strftime('%d %b, %H:%M') }}</p>
+                            <p><strong>Duration:</strong> {{ flight.duration }}</p>
+                            <p><strong>Seats Available:</strong> {{ flight.available_seats }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Price</h5>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <h5>${{ "%.2f"|format(flight.price) }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Select Payment Method</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {% if form.payment_method.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.payment_method.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                {% for value, label in form.payment_method.choices %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card payment-method-card">
+                                            <label class="card-body" style="cursor: pointer;">
+                                                <input type="radio" name="payment_method" value="{{ value }}" 
+                                                       {% if form.payment_method.data == value %}checked{% endif %} required>
+                                                <span class="ml-2"><strong>{{ label }}</strong></span>
+                                                {% if value == 'visa' %}
+                                                    <p class="small text-muted mt-2">💳 Pay securely with your Visa card</p>
+                                                {% elif value == 'mastercard' %}
+                                                    <p class="small text-muted mt-2">💳 Mastercard Debit/Credit</p>
+                                                {% elif value == 'mpesa' %}
+                                                    <p class="small text-muted mt-2">📱 M-Pesa Mobile Money (Kenya)</p>
+                                                {% elif value == 'paypal' %}
+                                                    <p class="small text-muted mt-2">🔒 Fast & Secure with PayPal</p>
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">
+                            Proceed to Payment
+                        </button>
+                        <a href="{{ url_for('main.flight_detail', flight_id=flight.id) }}" 
+                           class="btn btn-secondary btn-lg btn-block mt-2">
+                            Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.payment-method-card {
+    border: 2px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.payment-method-card:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+}
+
+.payment-method-card input[type="radio"]:checked {
+    border-color: #007bff;
+}
+
+.payment-method-card input[type="radio"]:checked + span {
+    color: #007bff;
+}
+</style>
+{% endblock %}

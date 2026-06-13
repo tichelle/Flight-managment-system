@@ -1,0 +1,163 @@
+body { font-family: 'Poppins', 'Inter', sans-serif; background-color: #f8fafc; }
+.hero-section { border-radius: 1rem; }
+.flight-card { transition: transform .25s ease, box-shadow .25s ease; }
+.flight-card:hover { transform: translateY(-5px); box-shadow: 0 20px 35px rgba(13, 110, 253, 0.12); }
+.sidebar { width: 240px; min-height: 100vh; }
+.admin-shell .admin-content { min-height: 100vh; }
+.text-smaller { font-size: 0.95rem; }
+.btn-outline-secondary { border-color: #0d6efd; color: #10bc86; }
+.btn-outline-secondary:hover { background-color: rgba(13,110,253,.1); }
+.card { border-radius: 1rem; }
+.form-label { font-weight: 600; }
+.alert { border-radius: 1rem; }
+/* New hero and search card styles to match the provided design */
+.hero-main { text-align: center; padding: 5.5rem 0 1.5rem; }
+.hero-main h1 { font-weight: 700; font-size: 2.5rem; color: #0f172a; margin-bottom: 1rem; }
+.hero-main p.lead { color: #475569; font-size: 1.05rem; margin-bottom: 1.75rem; }
+.hero-oval { margin: 0 auto; width: 88%; max-width: 1100px; height: 340px; background-size: cover; background-position: center; border-radius: 220px; box-shadow: 0 20px 50px rgba(2,6,23,0.05); overflow: hidden; }
+.class-pills { display:flex; gap:0.75rem; justify-content:center; margin-top:1.25rem; }
+.class-pills .pill { padding: .55rem 1.1rem; border-radius: 999px; background: #f1f5f9; color: #334155; font-weight:600; border: 0; }
+.class-pills .pill.active { background: #3b82f6; color: #fff; }
+.search-card { margin: -60px auto 0; background: #fff; border-radius: 1rem; padding: 1.25rem; max-width: 1100px; box-shadow: 0 18px 40px rgba(2,6,23,0.06); border: 1px solid rgba(15,23,42,0.04); }
+.search-card .form-control { border: none; box-shadow: none; padding: .8rem 1rem; }
+.search-card .btn-search { background: #3b82f6; color: #fff; border-radius: .8rem; padding: .7rem 1.25rem; }
+.search-card .form-row .col { padding-right: .5rem; padding-left: .5rem; }
+.stats-section .stat-card { background: #fff; border-radius: .8rem; padding: 1.25rem; box-shadow: 0 6px 18px rgba(2,6,23,0.04); }
+/* Topbar and main nav styles to match mock */
+.topbar { background: #f1f5f9; }
+.main-nav { background: transparent; }
+.main-nav .nav-link { color: #0f172a; font-weight:600; }
+.contact-btn { background: #2563eb; color: #fff; padding: .6rem 1rem; border-radius: 999px; box-shadow: 0 8px 24px rgba(37,99,235,0.18); border: none; }
+.contact-btn:hover { background:#1e40af; color:#fff; }
+.navbar-brand span { font-size: 1.1rem; }
+.main-nav .navbar-brand div { background: linear-gradient(135deg,#1d4ed8,#3b82f6); }
+@media (max-width: 991px) { .sidebar { width: 100%; min-height: auto; } .admin-shell { flex-direction: column; } }
+@media (max-width: 767px) {
+	.hero-main h1 { font-size: 1.6rem; }
+	.hero-oval { height: 220px; border-radius: 120px; }
+	.search-card { margin-top: -40px; padding: 1rem; }
+}
+@media (max-width: 991px) {
+	.main-nav .col-6 { display: none !important; }
+	.main-nav .col-3 { flex: 0 0 50%; }
+}
+
+	/* Flight services section */
+	.service-section { background: transparent; padding: 3rem 0; }
+	.service-section h2 { text-align: center; color: #0f172a; margin-bottom: 1.5rem; font-weight:700; }
+	.service-card { background: #fff; border-radius: .8rem; padding: 1.75rem; text-align: center; transition: transform .25s ease, box-shadow .25s ease; box-shadow: 0 8px 30px rgba(2,6,23,0.04); }
+	.service-card i { color: #2563eb; margin-bottom: .75rem; }
+	.service-card h5 { margin-top: .6rem; color: #0f172a; font-weight:600; }
+	.service-card p { color: #6b7280; margin-top: .5rem; }
+	.service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(2,6,23,0.08); }
+	.service-col { margin-bottom: 1.5rem; }
+
+	@media (max-width: 767px) {
+		.service-card { padding: 1.25rem; }
+	}
+
+	/* Ensure flight cards are visible above hero background */
+	.flight-card {
+		background: #ffffff;
+		position: relative;
+		z-index: 2;
+		border-radius: 1rem;
+	}
+
+	.flight-card .airline-header { border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+
+	.flight-section-container { margin-top: 1.5rem; margin-bottom: 2rem; }
+
+	/* Compact flight cards so details fit inside */
+	.flight-card {
+		min-height: 220px;
+		padding-bottom: 0.5rem;
+		border: 1px solid rgba(15,23,42,0.06) !important;
+		box-shadow: 0 10px 22px rgba(2,6,23,0.06) !important;
+	}
+	.flight-card .p-4, .flight-card .p-md-5 { padding: 0.75rem !important; }
+	.flight-card .airline-header { padding: .6rem .9rem !important; }
+
+	@media (max-width: 991px) {
+		.flight-card { min-height: 200px; }
+	}
+
+	/* Improve contrast and readability inside flight cards */
+	.flight-card {
+		z-index: 20;
+		background: #ffffff !important;
+	}
+	.flight-card .airline-header {
+		background: linear-gradient(135deg,#071427,#1e40af) !important;
+		color: #ffffff !important;
+	}
+	.flight-card .badge {
+		background: rgba(255,255,255,0.96) !important;
+		color: #06202a !important;
+		font-weight: 700;
+		padding: .22rem .5rem !important;
+		font-size: .75rem !important;
+	}
+	.flight-card .small,
+	.flight-card .text-muted {
+		color: #475569 !important;
+		font-size: .85rem !important;
+	}
+	.flight-card h3,
+	.flight-card .h2,
+	.flight-card .h3 {
+		color: #071427 !important;
+		font-size: 1rem !important;
+	}
+	.flight-card .border-top {
+		border-top-color: rgba(15,23,42,0.06) !important;
+	}
+	.flight-card a.btn-secondary {
+		background: #f1f5f9 !important;
+		color: #071427 !important;
+		border: 1px solid rgba(15,23,42,0.04) !important;
+	}
+
+	/* Prominent details button for flight cards */
+	.flight-card .btn-details {
+		background: linear-gradient(90deg,#2563eb,#3b82f6);
+		color: #fff !important;
+		border: none !important;
+		padding: .55rem .9rem !important;
+		border-radius: .6rem !important;
+		font-weight: 600 !important;
+		box-shadow: 0 8px 20px rgba(37,99,235,0.18) !important;
+	}
+	.flight-card .btn-details:hover {
+		background: linear-gradient(90deg,#1e40af,#2563eb) !important;
+		transform: translateY(-2px);
+	}
+
+	/* Ensure cards sit above background overlays */
+	.flight-section-container { position: relative; z-index: 5; }
+
+	/* Admin dashboard styles */
+	.admin-shell { min-height: 100vh; }
+	.sidebar { width: 260px; min-height: 100vh; background: linear-gradient(180deg,#0b1220,#0f1724); }
+	.sidebar .navbar-brand { font-size: 1.25rem; font-weight:700; }
+	.sidebar .nav-link { color: rgba(255,255,255,0.85); padding: .8rem 1rem; border-radius: .6rem; margin-bottom: .35rem; }
+	.sidebar .nav-link:hover { background: rgba(255,255,255,0.04); color: #fff; }
+	.admin-content { background: #f6f8fb; }
+	.admin-topbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; }
+	.admin-topbar .search { flex:1; max-width:520px; }
+	.admin-topbar .user { display:flex; align-items:center; gap:.75rem; }
+	.avatar { width:40px; height:40px; border-radius:50%; background:#334155; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; }
+	.admin-stats { display:flex; gap:1rem; flex-wrap:wrap; }
+	.admin-stat { flex:1 1 12rem; background:#fff; border-radius:.75rem; padding:1rem; box-shadow: 0 10px 30px rgba(2,6,23,0.06); }
+	.admin-stat .icon { width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; }
+	.admin-stat h6 { color:#64748b; font-size:.8rem; margin-bottom:.5rem; }
+	.admin-stat h2 { font-size:1.6rem; margin:0; }
+
+	/* Table card */
+	.card.table-card { border-radius: .75rem; overflow: hidden; }
+	.card.table-card .card-body { padding: 1rem; }
+
+	@media (max-width: 991px) {
+		.sidebar { width: 100%; }
+		.admin-shell { flex-direction: column; }
+	}

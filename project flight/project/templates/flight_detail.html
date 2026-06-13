@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% block title %}Flight {{ flight.flight_number }} - Flight Manager{% endblock %}
+{% block head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static', filename='css/flight_detail.css') }}">{% endblock %}
+{% block content %}
+{% set status_class = 'on-time' if flight.status|lower == 'on time' else ('delayed' if flight.status|lower == 'delayed' else '') %}
+
+<div class="flight-card" role="group" aria-label="Flight {{ flight.flight_number }} {{ flight.airline.name }}">
+  <header class="fc-header">
+    <div class="fc-title">
+      <h3>{{ flight.flight_number }}</h3>
+      <div class="airline">{{ flight.airline.name }}</div>
+    </div>
+    <div class="fc-status {{ status_class }}" aria-hidden="true">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="status-text">{{ flight.status }}</span>
+    </div>
+  </header>
+
+  <div class="fc-route">
+    <div class="city">
+      <div class="city-name">{{ flight.departure_city }}</div>
+      <div class="city-code">{{ flight.departure_airport or '—' }}</div>
+      <time class="city-time" datetime="{{ flight.departure_time.strftime('%Y-%m-%dT%H:%M') }}">{{ flight.departure_time.strftime('%H:%M') }}</time>
+      <div class="city-date">{{ flight.departure_time.strftime('%b %d, %Y') }}</div>
+    </div>
+
+    <div class="duration" aria-hidden="true">
+      <div class="dur-time">{{ flight.duration or 'N/A' }}</div>
+      <div class="dur-line">—</div>
+      <div class="dur-type">{{ flight.flight_type or '—' }}</div>
+    </div>
+
+    <div class="city">
+      <div class="city-name">{{ flight.destination_city }}</div>
+      <div class="city-code">{{ flight.destination_airport or '—' }}</div>
+      <time class="city-time" datetime="{{ flight.arrival_time.strftime('%Y-%m-%dT%H:%M') }}">{{ flight.arrival_time.strftime('%H:%M') }}</time>
+      <div class="city-date">{{ flight.arrival_time.strftime('%b %d, %Y') }}</div>
+    </div>
+  </div>
+
+  <div class="fc-meta">
+    <div class="price">
+      <div class="amount">${{ '%.2f'|format(flight.price) }}</div>
+      <div class="per">per person</div>
+    </div>
+
+    <div class="seats" aria-label="{{ flight.available_seats }} seats left">
+      <div class="seats-count">{{ flight.available_seats }}</div>
+      <div class="seats-text">seats left</div>
+      <div class="seats-bar" aria-hidden="true">
+        <span style="width:{{ ((flight.available_seats / (flight.total_seats|default(100))) * 100)|round(0) }}%"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-actions">
+    {% if current_user.is_authenticated %}
+      <form method="post" action="{{ url_for('main.book_flight', flight_id=flight.id) }}">
+        <button class="btn book-btn" type="submit">Book Now</button>
+      </form>
+      <form method="post" action="{{ url_for('main.favorite', flight_id=flight.id) }}">
+        <button class="btn fav-btn" type="submit" aria-pressed="{{ 'true' if flight.is_favorite|default(false) else 'false' }}" title="Toggle favorite">
+          <span class="heart" aria-hidden="true">{{ '♥' if flight.is_favorite|default(false) else '♡' }}</span>
+          <span class="sr-only">Toggle favorite</span>
+        </button>
+      </form>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}" class="btn book-btn">Sign in to book</a>
+    {% endif %}
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/flight_detail.js') }}"></script>
+{% endblock %}

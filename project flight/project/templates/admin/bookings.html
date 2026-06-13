@@ -1,0 +1,24 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Manage Bookings{% endblock %}
+{% block content %}
+<h4>Bookings</h4>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>#</th><th>User</th><th>Flight</th><th>Seat</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.user.username }}</td>
+          <td>{{ booking.flight.flight_number }}</td>
+          <td>{{ booking.seat_number }}</td>
+          <td>{{ booking.status }}</td>
+          <td>{{ booking.booking_date.strftime('%b %d, %Y') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4>{{ title }}</h4>
+    <form method="post">
+      {{ form.hidden_tag() }}
+      <div class="row gy-3">
+        <div class="col-md-6">{{ form.name.label(class_='form-label') }}{{ form.name(class_='form-control') }}</div>
+        <div class="col-md-6">{{ form.country.label(class_='form-label') }}{{ form.country(class_='form-control') }}</div>
+        <div class="col-md-12">{{ form.logo.label(class_='form-label') }}{{ form.logo(class_='form-control') }}</div>
+      </div>
+      <div class="mt-4"><button class="btn btn-primary">Save Airline</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}
